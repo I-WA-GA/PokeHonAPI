@@ -1,0 +1,216 @@
+body {
+    font-family: "M PLUS Rounded 1c";
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #a5d696;
+    font-size: 20px;
+    background-image: url("{{ url_for('static', filename='images/kabigon1.jpg') }}");
+    background-size: cover;
+}
+
+.container {
+    padding: 10px;
+    background-color: rgb(251, 252, 204);
+    border-radius: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 60%;
+    max-width: 90%;
+    margin: 10px auto;
+    opacity: 0.7;
+}
+
+h1 {
+    color: #333;
+    font-family: "Nico Moji";
+    font-size: 5rem;
+    color: #617cb9;
+    text-shadow: 1px 1px 2px rgb(0, 0, 0);
+}
+
+h1 rt {
+    color: rgb(53, 40, 126);
+}
+
+form {
+    margin: 20px auto;
+    width: 70%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+select {
+    width: calc(100% - 20px);
+    /* 余白を調整 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 10px;
+    margin: 10px;
+}
+
+#text {
+    width: 95%;
+    margin: 10px auto;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 50px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#pokemon-image {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+}
+
+ul li {
+    list-style: none;
+}
+
+input,
+.result {
+    margin: 20px auto;
+}
+
+.balloon {
+    position: relative;
+    top: 345px;
+    /* 下からの距離を調整 */
+    right: -62%;
+    /* 右からの距離を調整 */
+    margin: 2em 0 2em 40px;
+    padding: 15px;
+    background: #fff0c6;
+    border-radius: 30px;
+    width: 140px;
+    z-index: 1;
+}
+
+.balloon:before {
+    content: "";
+    position: absolute;
+    top: 98px;
+    left: -36px;
+    /* マイナスの値で左にずらす */
+    width: 13px;
+    height: 12px;
+    bottom: 0;
+    background: #fff0c6;
+    border-radius: 50%;
+}
+
+.balloon:after {
+    content: "";
+    position: absolute;
+    top: 73px;
+    left: -23px;
+    /* マイナスの値で左にずらす */
+    width: 20px;
+    height: 18px;
+    bottom: 3px;
+    background: #fff0c6;
+    border-radius: 50%;
+}
+
+.balloon p {
+    margin: 0;
+    padding: 0;
+}
+
+.balloon2 {
+    position: relative;
+    top: 772px;
+    right: -20%;
+    margin: 2em 0 2em 40px;
+    padding: 15px;
+    background: #fff0c6;
+    border-radius: 30px;
+    width: 140px;
+    display: none;
+    z-index: 1;
+}
+
+.balloon2:before {
+    content: "";
+    position: absolute;
+    top: 20%;
+    left: 110%;
+    width: 13px;
+    height: 12px;
+    bottom: 0;
+    background: #fff0c6;
+    border-radius: 50%;
+}
+
+.balloon2:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    /* バルーンの上端から50%位置（バルーンの中央）に配置 */
+    left: 100%;
+    /* バルーンの右端から100%位置（バルーンの左端）に配置 */
+    transform: translateY(-50%);
+    /* バルーンの高さの半分だけ上に移動 */
+    width: 20px;
+    height: 18px;
+    bottom: 3px;
+    background: #fff0c6;
+    border-radius: 50%;
+}
+
+.balloon2 p {
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (min-width: 1000px) {
+    .wrapper {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+    .balloon,
+    .balloon2 {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .container {
+        width: 80%;
+    }
+
+    h1 {
+        font-size: 160%;
+    }
+
+    input[type="text"],
+    select {
+        width: 100%;
+    }
+
+    #pokemon-image {
+        width: 180px;
+        /* 画像の幅 */
+        height: 180px;
+        /* 画像の高さ */
+    }
+}

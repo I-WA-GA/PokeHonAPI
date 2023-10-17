@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, make_response
 from flask_cors import CORS
-
 from googletrans import Translator
 import pyttsx3
 import requests
