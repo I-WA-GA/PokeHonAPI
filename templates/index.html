@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html lang="en">
+<html lang="ja">
 
 <head>
   <meta charset="UTF-8">
@@ -8,7 +8,7 @@
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-  <script src="{{ url_for('static', filename='/js/script.js') }}"></script> 
+  <!-- <script src="{{ url_for('static', filename='/js/script.js') }}"></script>  -->
   <title>POKE HON</title>
   <style>
     body{
@@ -76,10 +76,8 @@
   </div>
   </div>
 
-
+<!-- 動くポケモン画像-start -->
 <script>
-
-  // その他のポケモン情報を表示
 // 画像の初期位置
 let x = window.innerWidth / 2 - 50; // 画像の幅の半分を引く
 let y = window.innerHeight / 2 - 50; // 画像の高さの半分を引く
@@ -117,6 +115,55 @@ function moveImage() {
 // メインループを開始
 moveImage();
 </script>
+<!-- 動くポケモン画像 --end -->
+
+
+<!-- 入力内容[text]を翻訳[translated_text] --start -->
+<script>
+  const playButton = document.getElementById("play-translated-text");
+  playButton.addEventListener("click", function () {
+      var translatedText = "{{ translated_text }}";
+      var synth = window.speechSynthesis;
+      var utterance = new SpeechSynthesisUtterance(translatedText);
+      synth.speak(utterance);
+  });
+</script>
+<!-- 入力内容[text]を翻訳[translated_text] --end -->
+
+
+<!-- バルーンの切り替え --start -->
+<script>
+  const translatedText = "{{ translated_text }}";
+const balloon = document.getElementById("balloon");
+const balloon2 = document.getElementById("success-balloon2");
+
+if (translatedText.trim() !== "") {
+  // 翻訳後の表示を制御
+  balloon.style.display = "none"; // 翻訳前のバルーン非表示
+  balloon2.style.display = "block"; // 翻訳後のバルーン表示
+}else {
+  balloon.style.display = "block"; // 翻訳前のバルーン表示
+  balloon2.style.display = "none"; // 翻訳後のバルーン非表示
+}
+
+// 画面が小さくなる場合、バルーンを非表示にする
+const screenWidth = window.innerWidth;
+if (screenWidth <= 800) {
+  balloon.style.display = "none";
+  balloon2.style.display = "none";
+}
+
+// ウィンドウのリサイズイベントを監視してバルーンの表示を更新
+window.addEventListener('resize', updateBalloonVisibility);
+
+// ページ読み込み時にも一度実行して初期状態を設定
+window.addEventListener('load', updateBalloonVisibility);
+</script>
+<!-- バルーンの切り替え --end -->
+
+
+
+
 </body>
 
 </html>
