@@ -5,7 +5,7 @@ body {
     padding: 0;
     background-color: #a5d696;
     font-size: 20px;
-    background-image: url("{{ url_for('static', filename='images/kabigon1.jpg') }}");
+    /* background-image: url("{{ url_for('static', filename='images/kabigon1.jpg') }}"); */
     background-size: cover;
 }
 

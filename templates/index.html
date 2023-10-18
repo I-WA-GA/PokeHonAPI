@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ja">
+
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
@@ -7,9 +8,14 @@
   <link href="https://fonts.googleapis.com/earlyaccess/nicomoji.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css')}}">
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script> 
+  <script src="{{ url_for('static', filename='/js/script.js') }}"></script> 
   <title>POKE HON</title>
-</head>
+  <style>
+    body{
+      background-image: url("{{ url_for('static', filename='images/kabigon1.jpg') }}");
+    }
+  </style>
+  </head>
 
 <body>
   <img id="pokemon-image" src="{{ pokemon_data['sprites']['front_default'] }}" alt="Pokemon Image">
@@ -28,20 +34,22 @@
       </ruby>アプリ</h1>
 
     <form action="/translate" method="post">
-      <label for="text">テキストまたは<ruby>音声<rt>おんせい</rt></ruby>を<ruby>入力<rt>にゅうりょく</rt></ruby>してください:</label>
-
+      <label for="text">テキストを<ruby>入力<rt>にゅうりょく</rt></ruby>:</label>
       <input type="text" id="text" name="text" required>
-      <button id="start-listening"><ruby>音声入力<rt>おんせいにゅうりょく</rt></ruby></button>
       <label for="target_lang"><ruby>翻訳言語<rt>ほんやくげんご</rt></ruby>を<ruby>選択<rt>せんたく</rt></ruby>してください:</label>
       <select id="target_lang" name="target_lang" required>
         <option value="en">英語</option>
-        <option value="ja">日本語</option>
         <!-- <option value="zh-cn">中国語</option> -->
+        <option value="ja">日本語</option>
         <option value="fr">フランス語</option>
         <option value="de">ドイツ語</option>
         <option value="es">スペイン語</option>
         <option value="nl">オランダ語</option>
         <option value="sv">スウェーデン語</option>
+        <!-- <option value="he">ヘブライ語</option> -->
+
+
+
       </select>
 
       <button type="submit"><ruby>翻訳<rt>ほんやく</rt></ruby>する</button>
@@ -55,6 +63,8 @@
     <p>{{ translated_text }}</p>
     <!-- 翻訳結果の再生ボタンを追加 -->
     <button id="play-translated-text"><ruby>翻訳<rt>ほんやく</rt></ruby>テキストを<ruby>再生<rt>さいせい</rt></ruby></button>
+
+
     {% endif %}
 
     <h2><ruby>翻訳履歴<rt>ほんやくりれき</rt></ruby>:</h2>
@@ -66,5 +76,47 @@
   </div>
   </div>
 
+
+<script>
+
+  // その他のポケモン情報を表示
+// 画像の初期位置
+let x = window.innerWidth / 2 - 50; // 画像の幅の半分を引く
+let y = window.innerHeight / 2 - 50; // 画像の高さの半分を引く
+
+// 画像の移動量と方向
+let moveSpeed = 3;
+let moveXDirection = 1; // x方向の移動方向
+let moveYDirection = 1; // y方向の移動方向
+
+// 画像要素を取得
+const imageElement = document.getElementById("pokemon-image");
+
+// メインループ（画像の移動を制御）
+function moveImage() {
+  // 画像の位置を更新（自動的に移動）
+  x += moveSpeed * moveXDirection;
+  y += moveSpeed * moveYDirection;
+
+  // 画像が画面の端に達した場合、方向を逆にして反対側から再び現れるように制御
+  if (x <= 0 || x >= window.innerWidth - imageElement.width) {
+    moveXDirection *= -1;
+  }
+  if (y <= 0 || y >= window.innerHeight - imageElement.height) {
+    moveYDirection *= -1;
+  }
+
+  // 画像の位置を設定
+  imageElement.style.left = x + "px";
+  imageElement.style.top = y + "px";
+
+  // メインループを再帰的に呼び出す
+  requestAnimationFrame(moveImage);
+}
+
+// メインループを開始
+moveImage();
+</script>
 </body>
+
 </html>

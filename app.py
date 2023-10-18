@@ -1,24 +1,22 @@
-from flask import Flask, render_template, request, make_response
-from flask_cors import CORS
+from flask import Flask, render_template, request, make_response, jsonify
 from googletrans import Translator
 import pyttsx3
 import requests
 import random
-import os
 
 app = Flask(__name__)
-CORS(app)
 
 engine = pyttsx3.init()
 
 # ポケモンAPIのベースURL
 base_url = 'https://pokeapi.co/api/v2/pokemon/'
 
-translator = Translator()
-
 # ランダムなポケモンの取得
 def get_random_pokemon():
-    pokemon_id = random.randint(1, 151)
+    # ポケモンのIDをランダムに選択
+    pokemon_id = random.randint(1, 151)  # 1から151までのポケモンが存在します
+
+    # ポケモンAPIからデータを取得
     response = requests.get(f'{base_url}{pokemon_id}')
     if response.status_code == 200:
         pokemon_data = response.json()
@@ -26,18 +24,23 @@ def get_random_pokemon():
     else:
         return None
 
-# 履歴を格納するリスト
+# 翻訳履歴を格納するリスト
 translation_history = []
 
 # ルートパスへのリクエストを処理する
 @app.route("/")
 def index():
+    # ランダムなポケモンのデータを取得
     pokemon_data = get_random_pokemon()
+
+    # 履歴をクッキーから取得
     translation_history = request.cookies.get('translation_history')
     if translation_history:
         translation_history = eval(translation_history)
     else:
         translation_history = []
+
+    # 履歴と共にテンプレートにデータを渡してレンダリング
     return render_template('index.html', pokemon_data=pokemon_data, translation_history=translation_history)
 
 # /translate ルートを追加し、翻訳を実行
@@ -46,39 +49,38 @@ def translate():
     if request.method == "POST":
         text = request.form["text"]
         target_lang = request.form["target_lang"]
-        
-        # 翻訳
         translated_text = call_google_translate(text, target_lang)
         
+        # 翻訳履歴をクッキーから取得
         translation_history = request.cookies.get('translation_history')
         if translation_history:
             translation_history = eval(translation_history)
         else:
             translation_history = []
+
+        # 新しい翻訳を履歴に追加
         translation_history.append((text, translated_text))
-        
+
+        # クッキーに翻訳履歴を保存
         response = make_response(render_template('index.html', text=text, translated_text=translated_text, pokemon_data=get_random_pokemon(), translation_history=translation_history))
         response.set_cookie('translation_history', str(translation_history))
 
+        # Google Translateで翻訳したテキストを読み上げる
         read_text_aloud(translated_text)
 
         return response
 
 def call_google_translate(text, target_lang):
-    # googletransを使用して翻訳
-    translated_text = translator.translate(text, dest=target_lang).text
-    return translated_text
+    translator = Translator()
+    translated_text = translator.translate(text, dest=target_lang)
+    return translated_text.text
 
 def read_text_aloud(text):
-    engine.say(text)
-    engine.runAndWait()
-
-# if __name__ == "__main__":
-#     app.debug = False
-#     app.run(debug=False, host='172.16.0.124', port=5000)
-
+    engine = pyttsx3.init()
+    engine = pyttsx3.init("sapi5")
+    engine.runAndWait()  
 
 if __name__ == "__main__":
+    app.debug = True
+    # app.run(debug=False, host='172.16.0.124', port=5000)
     app.run(debug=True)
-    
-
